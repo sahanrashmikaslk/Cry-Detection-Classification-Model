@@ -1,11 +1,11 @@
 # Baby Cry Detection & Classification System
 
 A comprehensive machine learning system for detecting and classifying baby cries using advanced audio processing and deep learning techniques. This project implements a two-stage pipeline: first detecting whether audio contains a baby cry, then classifying the cry type to help caregivers understand the baby's needs.
+The model was developed for our final-year research project, **Development of an Automated Condition Controlling and Monitoring System for an Infant Incubator**.
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.20.0-orange.svg)](https://www.tensorflow.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.51.0-red.svg)](https://streamlit.io/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Overview
 
@@ -77,7 +77,7 @@ Audio Input → Preprocessing (16kHz) → Feature Extraction
 - **Output**: Cry type with confidence score
 - **Classes**: belly_pain, burping, discomfort, hungry, tired
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Core Frameworks & Libraries
 
@@ -458,23 +458,32 @@ Cry-Detection-Classification-Model/
 
 ## Performance
 
-### Detection Model Performance
+### Model Performance (latest)
 
-| Metric            | Score   |
-| ----------------- | ------- |
-| Accuracy          | ~92-95% |
-| Precision (cry)   | ~90%    |
-| Recall (cry)      | ~93%    |
-| F1-Score          | ~91%    |
-| Optimal Threshold | 0.212   |
+### Detection model (YAMNet + LR)
 
-### Classification Model Performance
+- Best val PR-AUC: **1.000**
+- Threshold (best F1 on val): **0.21193** (F1 ≈ **1.000**)
+- Test accuracy: **0.978**
+- Test classification report:
+  - not_cry — Precision 0.96, Recall 0.98, F1 0.97 (support 49)
+  - cry — Precision 0.99, Recall 0.98, F1 0.98 (support 85)
+  - Accuracy 0.98, Macro avg 0.98, Weighted avg 0.98 (support 134)
+- Confusion matrix (test): TN=48, FP=1, FN=2, TP=83
+- PR AUC (test): **0.998**
 
-| Metric            | Score    |
-| ----------------- | -------- |
-| Overall Accuracy  | ~85-90%  |
-| Cross-Validation  | ~83% ±3% |
-| Weighted F1-Score | ~87%     |
+### Classification model (cry types: belly_pain, burping, discomfort, hungry, tired)
+
+- Accuracy: **0.929** (549 samples)
+- Macro avg: Precision 0.81, Recall 0.79, F1 0.80
+- Weighted avg: Precision 0.93, Recall 0.93, F1 0.93
+- Per-class (precision / recall / f1 / support):
+  - belly_pain: 0.75 / 0.63 / 0.69 (19)
+  - burping: 0.88 / 0.70 / 0.78 (10)
+  - discomfort: 0.82 / 0.84 / 0.83 (32)
+  - hungry: 0.97 / 0.96 / 0.96 (459)
+  - tired: 0.65 / 0.83 / 0.73 (29)
+- Confusion matrix highlights: main confusions are discomfort↔hungry and small mislabels across minority classes (see plot above).
 
 **Per-Class Performance:**
 
@@ -483,11 +492,3 @@ Cry-Detection-Classification-Model/
 - Discomfort: Moderate performance
 - Belly Pain: Moderate (can be confused with discomfort)
 - Burping: Lower recall (smaller dataset)
-
-**Confusion Notes:**
-
-- Some overlap between discomfort and belly pain
-- Tired cries can be misclassified when low energy
-- Model confidence decreases with background noise
-
-_If you find this project helpful, please consider giving it a ⭐ on GitHub!_
